@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexical and Syntax Analyzer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Lexical & Syntax Analyzer</h1>
+            <p>Enter your C code to analyze tokens and generate Abstract Syntax Tree</p>
+        </div>
+
+        <div class="main-grid">
+            <div class="input-section">
+                <div class="section-title">📝 Input Code</div>
+                <textarea id="codeInput" class="code-input" placeholder="// Enter your C code here..."></textarea>
+                <div class="examples">
+                    <strong>Quick Examples:</strong><br>
+                    <button class="example-btn" onclick="loadExample('simple')">Simple Assignment</button>
+                    <button class="example-btn" onclick="loadExample('ifelse')">If-Else Statement</button>
+                    <button class="example-btn" onclick="loadExample('while')">While Loop</button>
+                    <button class="example-btn" onclick="loadExample('cfunction')">C Function</button>
+                    <button class="example-btn" onclick="loadExample('cprogram')">C Program</button>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <div class="section-title">⚙️ Analysis Controls</div>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="runLexicalAnalysis()">🔤 Run Lexer</button>
+                    <button class="btn btn-primary" onclick="runSyntaxAnalysis()">🌳 Run Parser</button>
+                    <button class="btn btn-secondary" onclick="clearResults()">🗑️ Clear</button>
+                </div>
+                <div class="stats" id="analysisStats" style="display: none;">
+                    <div class="stat-item">
+                        <div class="stat-number" id="tokenCount">0</div>
+                        <div class="stat-label">Tokens</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="lineCount">0</div>
+                        <div class="stat-label">Lines</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="nodeCount">0</div>
+                        <div class="stat-label">AST Nodes</div>
+                    </div>
+                </div>
+                <div id="statusMessage"></div>
+            </div>
+        </div>
+
+        <div class="results-grid">
+            <div class="result-section">
+                <div class="section-title">🔤 Lexical Analysis (Tokens)</div>
+                <div id="tokenOutput" class="result-content">
+                    Run lexical analysis to see tokens...
+                </div>
+            </div>
+            <div class="result-section">
+                <div class="section-title">📊 Parse Results</div>
+                <div id="parseOutput" class="result-content">
+                    Run syntax analysis to see parse results...
+                </div>
+            </div>
+        </div>
+
+        <div class="result-section ast-section">
+            <div class="section-title">🌳 Abstract Syntax Tree (AST)</div>
+            <div id="astVisualization" class="ast-visualization">
+                Run syntax analysis to generate AST...
+            </div>
+        </div>
+    </div>
+
+    <script src="lexer.js"></script>
+    <script src="parser.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>

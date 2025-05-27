@@ -1,0 +1,811 @@
+State 50 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: stmt_list
+
+    2 stmt_list: stmt_list stmt
+    3          | stmt
+
+    4 stmt: matched_stmt
+    5     | unmatched_stmt
+
+    6 matched_stmt: IF '(' expr ')' matched_stmt ELSE matched_stmt
+    7             | WHILE '(' expr ')' stmt
+    8             | ID '=' expr ';'
+    9             | expr ';'
+   10             | block
+
+   11 unmatched_stmt: IF '(' expr ')' stmt
+   12               | IF '(' expr ')' matched_stmt ELSE unmatched_stmt
+
+   13 block: '{' stmt_list '}'
+   14      | '{' '}'
+
+   15 expr: expr '+' expr
+   16     | expr '-' expr
+   17     | expr '*' expr
+   18     | expr '/' expr
+   19     | expr EQ expr
+   20     | expr NEQ expr
+   21     | expr LEQ expr
+   22     | expr GEQ expr
+   23     | '(' expr ')'
+   24     | NUMBER
+   25     | FLOAT
+   26     | ID
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 6 7 11 12 23
+')' (41) 6 7 11 12 23
+'*' (42) 17
+'+' (43) 15
+'-' (45) 16
+'/' (47) 18
+';' (59) 8 9
+'=' (61) 8
+'{' (123) 13 14
+'}' (125) 13 14
+error (256)
+NUMBER (258) 24
+FLOAT (259) 25
+ID (260) 8 26
+IF (261) 6 11 12
+ELSE (262) 6 12
+WHILE (263) 7
+EQ (264) 19
+NEQ (265) 20
+LEQ (266) 21
+GEQ (267) 22
+
+
+Nonterminals, with rules where they appear
+
+$accept (23)
+    on left: 0
+program (24)
+    on left: 1, on right: 0
+stmt_list (25)
+    on left: 2 3, on right: 1 2 13
+stmt (26)
+    on left: 4 5, on right: 2 3 7 11
+matched_stmt (27)
+    on left: 6 7 8 9 10, on right: 4 6 12
+unmatched_stmt (28)
+    on left: 11 12, on right: 5 12
+block (29)
+    on left: 13 14, on right: 10
+expr (30)
+    on left: 15 16 17 18 19 20 21 22 23 24 25 26, on right: 6 7 8 9
+    11 12 15 16 17 18 19 20 21 22 23
+
+
+state 0
+
+    0 $accept: . program $end
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 3
+    IF      shift, and go to state 4
+    WHILE   shift, and go to state 5
+    '('     shift, and go to state 6
+    '{'     shift, and go to state 7
+
+    program         go to state 8
+    stmt_list       go to state 9
+    stmt            go to state 10
+    matched_stmt    go to state 11
+    unmatched_stmt  go to state 12
+    block           go to state 13
+    expr            go to state 14
+
+
+state 1
+
+   24 expr: NUMBER .
+
+    $default  reduce using rule 24 (expr)
+
+
+state 2
+
+   25 expr: FLOAT .
+
+    $default  reduce using rule 25 (expr)
+
+
+state 3
+
+    8 matched_stmt: ID . '=' expr ';'
+   26 expr: ID .
+
+    '='  shift, and go to state 15
+
+    $default  reduce using rule 26 (expr)
+
+
+state 4
+
+    6 matched_stmt: IF . '(' expr ')' matched_stmt ELSE matched_stmt
+   11 unmatched_stmt: IF . '(' expr ')' stmt
+   12               | IF . '(' expr ')' matched_stmt ELSE unmatched_stmt
+
+    '('  shift, and go to state 16
+
+
+state 5
+
+    7 matched_stmt: WHILE . '(' expr ')' stmt
+
+    '('  shift, and go to state 17
+
+
+state 6
+
+   23 expr: '(' . expr ')'
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 19
+
+
+state 7
+
+   13 block: '{' . stmt_list '}'
+   14      | '{' . '}'
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 3
+    IF      shift, and go to state 4
+    WHILE   shift, and go to state 5
+    '('     shift, and go to state 6
+    '{'     shift, and go to state 7
+    '}'     shift, and go to state 20
+
+    stmt_list       go to state 21
+    stmt            go to state 10
+    matched_stmt    go to state 11
+    unmatched_stmt  go to state 12
+    block           go to state 13
+    expr            go to state 14
+
+
+state 8
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 22
+
+
+state 9
+
+    1 program: stmt_list .
+    2 stmt_list: stmt_list . stmt
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 3
+    IF      shift, and go to state 4
+    WHILE   shift, and go to state 5
+    '('     shift, and go to state 6
+    '{'     shift, and go to state 7
+
+    $default  reduce using rule 1 (program)
+
+    stmt            go to state 23
+    matched_stmt    go to state 11
+    unmatched_stmt  go to state 12
+    block           go to state 13
+    expr            go to state 14
+
+
+state 10
+
+    3 stmt_list: stmt .
+
+    $default  reduce using rule 3 (stmt_list)
+
+
+state 11
+
+    4 stmt: matched_stmt .
+
+    $default  reduce using rule 4 (stmt)
+
+
+state 12
+
+    5 stmt: unmatched_stmt .
+
+    $default  reduce using rule 5 (stmt)
+
+
+state 13
+
+   10 matched_stmt: block .
+
+    $default  reduce using rule 10 (matched_stmt)
+
+
+state 14
+
+    9 matched_stmt: expr . ';'
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    EQ   shift, and go to state 24
+    NEQ  shift, and go to state 25
+    LEQ  shift, and go to state 26
+    GEQ  shift, and go to state 27
+    '+'  shift, and go to state 28
+    '-'  shift, and go to state 29
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+    ';'  shift, and go to state 32
+
+
+state 15
+
+    8 matched_stmt: ID '=' . expr ';'
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 33
+
+
+state 16
+
+    6 matched_stmt: IF '(' . expr ')' matched_stmt ELSE matched_stmt
+   11 unmatched_stmt: IF '(' . expr ')' stmt
+   12               | IF '(' . expr ')' matched_stmt ELSE unmatched_stmt
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 34
+
+
+state 17
+
+    7 matched_stmt: WHILE '(' . expr ')' stmt
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 35
+
+
+state 18
+
+   26 expr: ID .
+
+    $default  reduce using rule 26 (expr)
+
+
+state 19
+
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+   23     | '(' expr . ')'
+
+    EQ   shift, and go to state 24
+    NEQ  shift, and go to state 25
+    LEQ  shift, and go to state 26
+    GEQ  shift, and go to state 27
+    '+'  shift, and go to state 28
+    '-'  shift, and go to state 29
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+    ')'  shift, and go to state 36
+
+
+state 20
+
+   14 block: '{' '}' .
+
+    $default  reduce using rule 14 (block)
+
+
+state 21
+
+    2 stmt_list: stmt_list . stmt
+   13 block: '{' stmt_list . '}'
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 3
+    IF      shift, and go to state 4
+    WHILE   shift, and go to state 5
+    '('     shift, and go to state 6
+    '{'     shift, and go to state 7
+    '}'     shift, and go to state 37
+
+    stmt            go to state 23
+    matched_stmt    go to state 11
+    unmatched_stmt  go to state 12
+    block           go to state 13
+    expr            go to state 14
+
+
+state 22
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 23
+
+    2 stmt_list: stmt_list stmt .
+
+    $default  reduce using rule 2 (stmt_list)
+
+
+state 24
+
+   19 expr: expr EQ . expr
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 38
+
+
+state 25
+
+   20 expr: expr NEQ . expr
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 39
+
+
+state 26
+
+   21 expr: expr LEQ . expr
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 40
+
+
+state 27
+
+   22 expr: expr GEQ . expr
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 41
+
+
+state 28
+
+   15 expr: expr '+' . expr
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 42
+
+
+state 29
+
+   16 expr: expr '-' . expr
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 43
+
+
+state 30
+
+   17 expr: expr '*' . expr
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 44
+
+
+state 31
+
+   18 expr: expr '/' . expr
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 18
+    '('     shift, and go to state 6
+
+    expr  go to state 45
+
+
+state 32
+
+    9 matched_stmt: expr ';' .
+
+    $default  reduce using rule 9 (matched_stmt)
+
+
+state 33
+
+    8 matched_stmt: ID '=' expr . ';'
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    EQ   shift, and go to state 24
+    NEQ  shift, and go to state 25
+    LEQ  shift, and go to state 26
+    GEQ  shift, and go to state 27
+    '+'  shift, and go to state 28
+    '-'  shift, and go to state 29
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+    ';'  shift, and go to state 46
+
+
+state 34
+
+    6 matched_stmt: IF '(' expr . ')' matched_stmt ELSE matched_stmt
+   11 unmatched_stmt: IF '(' expr . ')' stmt
+   12               | IF '(' expr . ')' matched_stmt ELSE unmatched_stmt
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    EQ   shift, and go to state 24
+    NEQ  shift, and go to state 25
+    LEQ  shift, and go to state 26
+    GEQ  shift, and go to state 27
+    '+'  shift, and go to state 28
+    '-'  shift, and go to state 29
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+    ')'  shift, and go to state 47
+
+
+state 35
+
+    7 matched_stmt: WHILE '(' expr . ')' stmt
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    EQ   shift, and go to state 24
+    NEQ  shift, and go to state 25
+    LEQ  shift, and go to state 26
+    GEQ  shift, and go to state 27
+    '+'  shift, and go to state 28
+    '-'  shift, and go to state 29
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+    ')'  shift, and go to state 48
+
+
+state 36
+
+   23 expr: '(' expr ')' .
+
+    $default  reduce using rule 23 (expr)
+
+
+state 37
+
+   13 block: '{' stmt_list '}' .
+
+    $default  reduce using rule 13 (block)
+
+
+state 38
+
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   19     | expr EQ expr .
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    '+'  shift, and go to state 28
+    '-'  shift, and go to state 29
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+
+    $default  reduce using rule 19 (expr)
+
+
+state 39
+
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   20     | expr NEQ expr .
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    '+'  shift, and go to state 28
+    '-'  shift, and go to state 29
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+
+    $default  reduce using rule 20 (expr)
+
+
+state 40
+
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   21     | expr LEQ expr .
+   22     | expr . GEQ expr
+
+    '+'  shift, and go to state 28
+    '-'  shift, and go to state 29
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+
+    $default  reduce using rule 21 (expr)
+
+
+state 41
+
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+   22     | expr GEQ expr .
+
+    '+'  shift, and go to state 28
+    '-'  shift, and go to state 29
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+
+    $default  reduce using rule 22 (expr)
+
+
+state 42
+
+   15 expr: expr . '+' expr
+   15     | expr '+' expr .
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+
+    $default  reduce using rule 15 (expr)
+
+
+state 43
+
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   16     | expr '-' expr .
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    '*'  shift, and go to state 30
+    '/'  shift, and go to state 31
+
+    $default  reduce using rule 16 (expr)
+
+
+state 44
+
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   17     | expr '*' expr .
+   18     | expr . '/' expr
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    $default  reduce using rule 17 (expr)
+
+
+state 45
+
+   15 expr: expr . '+' expr
+   16     | expr . '-' expr
+   17     | expr . '*' expr
+   18     | expr . '/' expr
+   18     | expr '/' expr .
+   19     | expr . EQ expr
+   20     | expr . NEQ expr
+   21     | expr . LEQ expr
+   22     | expr . GEQ expr
+
+    $default  reduce using rule 18 (expr)
+
+
+state 46
+
+    8 matched_stmt: ID '=' expr ';' .
+
+    $default  reduce using rule 8 (matched_stmt)
+
+
+state 47
+
+    6 matched_stmt: IF '(' expr ')' . matched_stmt ELSE matched_stmt
+   11 unmatched_stmt: IF '(' expr ')' . stmt
+   12               | IF '(' expr ')' . matched_stmt ELSE unmatched_stmt
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 3
+    IF      shift, and go to state 4
+    WHILE   shift, and go to state 5
+    '('     shift, and go to state 6
+    '{'     shift, and go to state 7
+
+    stmt            go to state 49
+    matched_stmt    go to state 50
+    unmatched_stmt  go to state 12
+    block           go to state 13
+    expr            go to state 14
+
+
+state 48
+
+    7 matched_stmt: WHILE '(' expr ')' . stmt
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 3
+    IF      shift, and go to state 4
+    WHILE   shift, and go to state 5
+    '('     shift, and go to state 6
+    '{'     shift, and go to state 7
+
+    stmt            go to state 51
+    matched_stmt    go to state 11
+    unmatched_stmt  go to state 12
+    block           go to state 13
+    expr            go to state 14
+
+
+state 49
+
+   11 unmatched_stmt: IF '(' expr ')' stmt .
+
+    $default  reduce using rule 11 (unmatched_stmt)
+
+
+state 50
+
+    4 stmt: matched_stmt .
+    6 matched_stmt: IF '(' expr ')' matched_stmt . ELSE matched_stmt
+   12 unmatched_stmt: IF '(' expr ')' matched_stmt . ELSE unmatched_stmt
+
+    ELSE  shift, and go to state 52
+
+    ELSE      [reduce using rule 4 (stmt)]
+    $default  reduce using rule 4 (stmt)
+
+
+state 51
+
+    7 matched_stmt: WHILE '(' expr ')' stmt .
+
+    $default  reduce using rule 7 (matched_stmt)
+
+
+state 52
+
+    6 matched_stmt: IF '(' expr ')' matched_stmt ELSE . matched_stmt
+   12 unmatched_stmt: IF '(' expr ')' matched_stmt ELSE . unmatched_stmt
+
+    NUMBER  shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    ID      shift, and go to state 3
+    IF      shift, and go to state 4
+    WHILE   shift, and go to state 5
+    '('     shift, and go to state 6
+    '{'     shift, and go to state 7
+
+    matched_stmt    go to state 53
+    unmatched_stmt  go to state 54
+    block           go to state 13
+    expr            go to state 14
+
+
+state 53
+
+    6 matched_stmt: IF '(' expr ')' matched_stmt ELSE matched_stmt .
+
+    $default  reduce using rule 6 (matched_stmt)
+
+
+state 54
+
+   12 unmatched_stmt: IF '(' expr ')' matched_stmt ELSE unmatched_stmt .
+
+    $default  reduce using rule 12 (unmatched_stmt)
